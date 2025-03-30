@@ -1,22 +1,58 @@
-import { Image } from "expo-image"
+import { Image, type ImageSource } from "expo-image";
+import { StyleSheet, View } from "react-native";
+import { Pressable, type PressableProps } from "react-native-gesture-handler";
+import { Text } from ".";
 
-type TImage = "date" | "friendship" | "relationship"
+type TImage = "date" | "friendship" | "relationship";
 
-interface Props {
-  size: number
-  image: TImage
+interface Item {
+  title: string;
+  image: ImageSource;
+  type: TImage;
 }
 
-const images = {
-  friendship: require('../assets/images/ui/friendship.svg'),
-  date: require('../assets/images/ui/dates.svg'),
-  relationship: require("../assets/images/ui/relationship.svg")
+interface Props extends PressableProps {
+  item: Item;
 }
 
-const image = (image: TImage) => {
-  return images[image]
+export default function ImageButton({ item, onPress }: Props) {
+  const height = item.type === "date" ? 32 : 52;
+  const width = item.type === "date" ? 24 : 52;
+
+  return (
+    <Pressable onPress={onPress}>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image source={item.image} style={{ height, width }} />
+        </View>
+        <Text
+          fontFamily="maven-pro"
+          weight="bold"
+          style={styles.text}
+          adjustsFontSizeToFit
+          numberOfLines={1}
+        >
+          {item.title}
+        </Text>
+      </View>
+    </Pressable>
+  );
 }
 
-export default function ImageButton({ image, size = 52 }: Props) {
-  return <Image source={image} style={{ height: size, width: size }} />
-}
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center"
+  },
+  imageContainer: {
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 120,
+    height: 52,
+    width: 52
+  },
+  text: {
+    paddingTop: 4,
+    lineHeight: 19
+  }
+});
