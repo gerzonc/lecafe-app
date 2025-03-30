@@ -14,8 +14,8 @@ import Animated, {
 
 import colors from "@/constants/colors";
 import { sections } from "@/services/data";
+import { store$ } from "@/store";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import { useState } from "react";
 import ImageButton from "../image-button";
 import Text from "../text";
 
@@ -27,6 +27,12 @@ interface Item {
   age: number;
   location: string;
   image: ImageSource;
+}
+
+interface Section {
+  title: string;
+  type: TSection;
+  image: any;
 }
 
 interface Props {
@@ -43,7 +49,12 @@ const ACTION_BUTTON_SIZE = 58;
 
 export default function Card({ item, onSectionPress, index }: Props) {
   const drawerProgress = useDrawerProgress();
-  const [activeSection, setActiveSection] = useState<TSection>("date");
+  const currentSection$ = store$.currentSection.get();
+
+  const handleSectionPress = (section: Section) => {
+    store$.currentSection.set(section.type);
+    store$.currentGradient.set(colors[section.type]);
+  };
 
   const animatedStyle = useAnimatedStyle(() => {
     const scale = interpolate(drawerProgress.value, [0, 1], [0.84, 1]);
@@ -84,7 +95,8 @@ export default function Card({ item, onSectionPress, index }: Props) {
                 <ImageButton
                   key={index.toString()}
                   item={section}
-                  active={activeSection === section.type}
+                  active={currentSection$ === section.type}
+                  onPress={() => handleSectionPress(section as Section)}
                 />
               ))}
             </View>

@@ -1,6 +1,7 @@
 import { Card } from "@/components";
-import colors from "@/constants/colors";
 import data from "@/services/data";
+import { store$ } from "@/store";
+import { observer } from "@legendapp/state/react";
 import { useDrawerProgress } from "@react-navigation/drawer";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
@@ -12,7 +13,10 @@ import Animated, {
 
 const { width: wWidth, height: wHeight } = Dimensions.get("window");
 
-export default function App() {
+const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
+
+export default observer(() => {
+  const gradient$ = store$.currentGradient.get();
   const progress = useDrawerProgress();
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -24,10 +28,10 @@ export default function App() {
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
-      <LinearGradient
-        colors={colors.dateGradient}
-        start={{ x: 0.4906, y: 1 }}
-        end={{ x: 0.5094, y: 0 }}
+      <AnimatedGradient
+        colors={gradient$.gradient}
+        start={gradient$.start}
+        end={gradient$.end}
         style={styles.gradient}
       />
       <Image
@@ -42,7 +46,7 @@ export default function App() {
         .reverse()}
     </Animated.View>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
