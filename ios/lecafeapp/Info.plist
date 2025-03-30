@@ -28,7 +28,7 @@
         <key>CFBundleURLSchemes</key>
         <array>
           <string>myapp</string>
-          <string>com.gerzon.fripick.lecafe-app</string>
+          <string>com.gerzon.lecafe-app</string>
         </array>
       </dict>
     </array>
@@ -48,6 +48,15 @@
     <key>NSUserActivityTypes</key>
     <array>
       <string>$(PRODUCT_BUNDLE_IDENTIFIER).expo.index_route</string>
+    </array>
+    <key>UIAppFonts</key>
+    <array>
+      <string>MavenPro-Bold.ttf</string>
+      <string>MavenPro-Regular.ttf</string>
+      <string>MavenPro-SemiBold.ttf</string>
+      <string>Quicksand-Bold.ttf</string>
+      <string>Quicksand-Regular.ttf</string>
+      <string>Quicksand-SemiBold.ttf</string>
     </array>
     <key>UILaunchStoryboardName</key>
     <string>SplashScreen</string>

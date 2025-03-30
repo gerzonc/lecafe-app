@@ -10,30 +10,42 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		2E88A33FB3CD4B90AA364372 /* MavenPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EC6F134977D4FD1AB4FCD50 /* MavenPro-Bold.ttf */; };
+		300CC40D35E048C29D1B4BBC /* Quicksand-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B41E82E0926F4832802BC54D /* Quicksand-SemiBold.ttf */; };
+		33ED3C7AB41F4CB19A07DBC4 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 62B46863E797414CB708E184 /* Quicksand-Bold.ttf */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		7A029BD871A24A16927C386E /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CB5D06BB1764B65800C28D4 /* noop-file.swift */; };
+		4A0912A8027D47D381F0AD6A /* Quicksand-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7830C6C47C5E483E87B93B6A /* Quicksand-Regular.ttf */; };
+		61D4BDF1DBF842F8ABAFB918 /* MavenPro-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3C1E1BA6C214BF7812D6F24 /* MavenPro-SemiBold.ttf */; };
+		8CEF28AB7EEC43F4A1C31B01 /* MavenPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 120564C094F1447E9C14A8FA /* MavenPro-Regular.ttf */; };
 		96905EF65AED1B983A6B3ABC /* libPods-lecafeapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-lecafeapp.a */; };
-		A6042BAB0FE1EDA2E6C46B40 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3AFA757C0F427F759DBCD68B /* PrivacyInfo.xcprivacy */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		BE8246CFADBF44038821B10D /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93FCA903B95C4E46B087739D /* noop-file.swift */; };
+		FA5C8312C94702F9D299E90E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 57FDCC4ED7CBA8FD995C99D0 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		120564C094F1447E9C14A8FA /* MavenPro-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "MavenPro-Regular.ttf"; path = "../assets/fonts/MavenPro-Regular.ttf"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* lecafeapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lecafeapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = lecafeapp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = lecafeapp/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = lecafeapp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = lecafeapp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = lecafeapp/main.m; sourceTree = "<group>"; };
-		3AFA757C0F427F759DBCD68B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = lecafeapp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		57FDCC4ED7CBA8FD995C99D0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = lecafeapp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-lecafeapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-lecafeapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5B42371AF3EE4F108E2B9266 /* lecafeapp-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "lecafeapp-Bridging-Header.h"; path = "lecafeapp/lecafeapp-Bridging-Header.h"; sourceTree = "<group>"; };
+		62B46863E797414CB708E184 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Bold.ttf"; path = "../assets/fonts/Quicksand-Bold.ttf"; sourceTree = "<group>"; };
 		6C2E3173556A471DD304B334 /* Pods-lecafeapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lecafeapp.debug.xcconfig"; path = "Target Support Files/Pods-lecafeapp/Pods-lecafeapp.debug.xcconfig"; sourceTree = "<group>"; };
+		6EC6F134977D4FD1AB4FCD50 /* MavenPro-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "MavenPro-Bold.ttf"; path = "../assets/fonts/MavenPro-Bold.ttf"; sourceTree = "<group>"; };
+		7830C6C47C5E483E87B93B6A /* Quicksand-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-Regular.ttf"; path = "../assets/fonts/Quicksand-Regular.ttf"; sourceTree = "<group>"; };
 		7A4D352CD337FB3A3BF06240 /* Pods-lecafeapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lecafeapp.release.xcconfig"; path = "Target Support Files/Pods-lecafeapp/Pods-lecafeapp.release.xcconfig"; sourceTree = "<group>"; };
-		8CB5D06BB1764B65800C28D4 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "lecafeapp/noop-file.swift"; sourceTree = "<group>"; };
+		93FCA903B95C4E46B087739D /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "lecafeapp/noop-file.swift"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = lecafeapp/SplashScreen.storyboard; sourceTree = "<group>"; };
+		B3C1E1BA6C214BF7812D6F24 /* MavenPro-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "MavenPro-SemiBold.ttf"; path = "../assets/fonts/MavenPro-SemiBold.ttf"; sourceTree = "<group>"; };
+		B41E82E0926F4832802BC54D /* Quicksand-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Quicksand-SemiBold.ttf"; path = "../assets/fonts/Quicksand-SemiBold.ttf"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F940F787503F400BAB06BF58 /* lecafeapp-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "lecafeapp-Bridging-Header.h"; path = "lecafeapp/lecafeapp-Bridging-Header.h"; sourceTree = "<group>"; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-lecafeapp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -59,9 +71,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				8CB5D06BB1764B65800C28D4 /* noop-file.swift */,
-				5B42371AF3EE4F108E2B9266 /* lecafeapp-Bridging-Header.h */,
-				3AFA757C0F427F759DBCD68B /* PrivacyInfo.xcprivacy */,
+				93FCA903B95C4E46B087739D /* noop-file.swift */,
+				F940F787503F400BAB06BF58 /* lecafeapp-Bridging-Header.h */,
+				57FDCC4ED7CBA8FD995C99D0 /* PrivacyInfo.xcprivacy */,
 			);
 			name = lecafeapp;
 			sourceTree = "<group>";
@@ -73,6 +85,20 @@
 				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-lecafeapp.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4282CDE7F5E3494EA4B2636F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				6EC6F134977D4FD1AB4FCD50 /* MavenPro-Bold.ttf */,
+				120564C094F1447E9C14A8FA /* MavenPro-Regular.ttf */,
+				B3C1E1BA6C214BF7812D6F24 /* MavenPro-SemiBold.ttf */,
+				62B46863E797414CB708E184 /* Quicksand-Bold.ttf */,
+				7830C6C47C5E483E87B93B6A /* Quicksand-Regular.ttf */,
+				B41E82E0926F4832802BC54D /* Quicksand-SemiBold.ttf */,
+			);
+			name = Resources;
+			path = "";
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -91,6 +117,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				D65327D7A22EEC0BE12398D9 /* Pods */,
 				D7E4C46ADA2E9064B798F356 /* ExpoModulesProviders */,
+				4282CDE7F5E3494EA4B2636F /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -147,13 +174,13 @@
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "lecafeapp" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				190C52D991E825D7142EE202 /* [Expo] Configure project */,
+				8415D95776B674C2703B4DCF /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				7D56A78D0ABA8D5219374815 /* [CP] Embed Pods Frameworks */,
+				50E885B6775D1E27951A57E4 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -203,7 +230,13 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				A6042BAB0FE1EDA2E6C46B40 /* PrivacyInfo.xcprivacy in Resources */,
+				2E88A33FB3CD4B90AA364372 /* MavenPro-Bold.ttf in Resources */,
+				8CEF28AB7EEC43F4A1C31B01 /* MavenPro-Regular.ttf in Resources */,
+				61D4BDF1DBF842F8ABAFB918 /* MavenPro-SemiBold.ttf in Resources */,
+				33ED3C7AB41F4CB19A07DBC4 /* Quicksand-Bold.ttf in Resources */,
+				4A0912A8027D47D381F0AD6A /* Quicksand-Regular.ttf in Resources */,
+				300CC40D35E048C29D1B4BBC /* Quicksand-SemiBold.ttf in Resources */,
+				FA5C8312C94702F9D299E90E /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,26 +280,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		190C52D991E825D7142EE202 /* [Expo] Configure project */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[Expo] Configure project";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-lecafeapp/expo-configure-project.sh\"\n";
-		};
-		7D56A78D0ABA8D5219374815 /* [CP] Embed Pods Frameworks */ = {
+		50E885B6775D1E27951A57E4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -318,6 +332,25 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lecafeapp/Pods-lecafeapp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8415D95776B674C2703B4DCF /* [Expo] Configure project */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[Expo] Configure project";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-lecafeapp/expo-configure-project.sh\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -328,7 +361,7 @@
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */,
-				7A029BD871A24A16927C386E /* noop-file.swift in Sources */,
+				BE8246CFADBF44038821B10D /* noop-file.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,12 +391,12 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.gerzon.fripick.lecafe-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gerzon.lecafe-app";
 				PRODUCT_NAME = lecafeapp;
 				SWIFT_OBJC_BRIDGING_HEADER = "lecafeapp/lecafeapp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -386,11 +419,11 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.gerzon.fripick.lecafe-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gerzon.lecafe-app";
 				PRODUCT_NAME = lecafeapp;
 				SWIFT_OBJC_BRIDGING_HEADER = "lecafeapp/lecafeapp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
