@@ -1,7 +1,8 @@
+import colors from "@/constants/colors";
 import { Image, type ImageSource } from "expo-image";
 import { StyleSheet, View } from "react-native";
 import { Pressable, type PressableProps } from "react-native-gesture-handler";
-import { Text } from ".";
+import Text from "./text";
 
 type TImage = "date" | "friendship" | "relationship";
 
@@ -13,17 +14,28 @@ interface Item {
 
 interface Props extends PressableProps {
   item: Item;
+  active: boolean;
 }
 
-export default function ImageButton({ item, onPress }: Props) {
+export default function ImageButton({ item, active, onPress }: Props) {
   const height = item.type === "date" ? 32 : 52;
   const width = item.type === "date" ? 24 : 52;
 
   return (
     <Pressable onPress={onPress}>
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <Image source={item.image} style={{ height, width }} />
+      <View style={[styles.container, { opacity: active ? 1 : 0.5 }]}>
+        <View
+          style={{
+            borderWidth: active ? 1 : 0,
+            borderColor: colors.pastelPink,
+            borderRadius: 120
+          }}
+        >
+          <View style={{ padding: 3 }}>
+            <View style={styles.imageContainer}>
+              <Image source={item.image} style={{ height, width }} />
+            </View>
+          </View>
         </View>
         <Text
           fontFamily="maven-pro"
@@ -32,7 +44,7 @@ export default function ImageButton({ item, onPress }: Props) {
           adjustsFontSizeToFit
           numberOfLines={1}
         >
-          {item.title}
+          {active ? item.title : ""}
         </Text>
       </View>
     </Pressable>

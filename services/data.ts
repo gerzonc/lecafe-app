@@ -27,4 +27,22 @@ export default [
     location: "Arequipa, Perú",
     image: require("../assets/images/list/girl-4.png")
   }
-]
+];
+
+export const sections = [
+  {
+    title: "Amistad",
+    type: "friendship",
+    image: require("../assets/images/ui/friendship.svg")
+  },
+  {
+    title: "Citas",
+    type: "date",
+    image: require("../assets/images/ui/dates.svg")
+  },
+  {
+    title: "Relación",
+    type: "relationship",
+    image: require("../assets/images/ui/relationship.svg")
+  }
+];

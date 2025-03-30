@@ -35,7 +35,11 @@ export default function App() {
         contentFit="contain"
         style={{ position: "absolute", width: wWidth, height: wHeight }}
       />
-      {data.map((item, index) => <Card item={item} index={index} />).reverse()}
+      {data
+        .map((item, index) => (
+          <Card key={index.toString()} item={item} index={index} />
+        ))
+        .reverse()}
     </Animated.View>
   );
 }

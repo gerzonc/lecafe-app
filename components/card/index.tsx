@@ -2,14 +2,22 @@ import { useDrawerProgress } from "@react-navigation/drawer";
 import { Image, type ImageSource } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import {
+  Gesture,
+  GestureDetector,
+  Pressable
+} from "react-native-gesture-handler";
 import Animated, {
   interpolate,
   useAnimatedStyle
 } from "react-native-reanimated";
 
+import colors from "@/constants/colors";
+import { sections } from "@/services/data";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import ImageButton from "../image-button";
+import Text from "../text";
 
 type TSection = "date" | "friendship" | "relationship";
 
@@ -24,31 +32,18 @@ interface Item {
 interface Props {
   item: Item;
   index: number;
+  onSectionPress?: () => void;
 }
 
 const { width: wWidth, height: wHeight } = Dimensions.get("window");
 
-const sections = [
-  {
-    title: "Amistad",
-    type: "friendship",
-    image: require("../../assets/images/ui/friendship.svg")
-  },
-  {
-    title: "Citas",
-    type: "date",
-    image: require("../../assets/images/ui/dates.svg")
-  },
-  {
-    title: "Relación",
-    type: "relationship",
-    image: require("../../assets/images/ui/relationship.svg")
-  }
-];
+const PROFILE_INFO_BTN = 32;
+const BODY_PADDING_HORIZONTAL = 31;
+const ACTION_BUTTON_SIZE = 58;
 
-export default function Card({ item, index }: Props) {
+export default function Card({ item, onSectionPress, index }: Props) {
   const drawerProgress = useDrawerProgress();
-  const [section, setSection] = useState<TSection>("date");
+  const [activeSection, setActiveSection] = useState<TSection>("date");
 
   const animatedStyle = useAnimatedStyle(() => {
     const scale = interpolate(drawerProgress.value, [0, 1], [0.84, 1]);
@@ -69,16 +64,16 @@ export default function Card({ item, index }: Props) {
     <GestureDetector gesture={gesture}>
       <Animated.View style={[styles.container, animatedStyle]}>
         <LinearGradient
-          // had to modify the colors of the gradient here since
-          // using the same colors/locations as Figma is not producing the same
+          // had to modify the colors/locations of the gradient here since
+          // using them as in Figma does not produce the same
           // results on the app.
           colors={[
-            "rgba(0,0,0,0.6)",
-            "rgba(0,0,0,0.6)",
+            "rgba(0,0,0,0.8)",
+            "rgba(0,0,0,0.7)",
             "rgba(0,0,0,0)",
             "rgba(0,0,0,0)"
           ]}
-          locations={[0.02, 1, 0.78, 0.15]}
+          locations={[0.02, 1, 0.78, 0.35]}
           start={{ x: 0, y: 1 }}
           end={{ x: 0, y: 0 }}
           style={styles.gradient}
@@ -86,8 +81,52 @@ export default function Card({ item, index }: Props) {
           <View style={styles.sections}>
             <View style={styles.btnsContainer}>
               {sections.map((section, index) => (
-                <ImageButton key={index.toString()} item={section} />
+                <ImageButton
+                  key={index.toString()}
+                  item={section}
+                  active={activeSection === section.type}
+                />
               ))}
+            </View>
+          </View>
+          <View style={styles.body}>
+            <View style={styles.basicInfo}>
+              <View>
+                <Text fontFamily="quicksand" fontSize={20} weight="bold">
+                  {item.name}, {item.age}
+                </Text>
+                <Text fontFamily="maven-pro">{item.location}</Text>
+              </View>
+              <Pressable style={styles.profileInfoBtn}>
+                <View>
+                  <MaterialIcons
+                    name="error-outline"
+                    size={24}
+                    color={colors.white}
+                  />
+                </View>
+              </Pressable>
+            </View>
+            <View style={styles.btnsContainer}>
+              <Pressable style={styles.dislikeBtn}>
+                <View>
+                  <MaterialIcons name="close" size={24} color={colors.white} />
+                </View>
+              </Pressable>
+              <Pressable style={styles.superLikeBtn}>
+                <View>
+                  <FontAwesome
+                    name="heart"
+                    size={24}
+                    color={colors.watermelonPink}
+                  />
+                </View>
+              </Pressable>
+              <Pressable style={styles.likeBtn}>
+                <View>
+                  <MaterialIcons name="check" size={24} color={colors.white} />
+                </View>
+              </Pressable>
             </View>
           </View>
         </LinearGradient>
@@ -125,5 +164,48 @@ const styles = StyleSheet.create({
     position: "absolute",
     height: "100%",
     width: "100%"
+  },
+  body: {
+    position: "absolute",
+    bottom: 30,
+    left: BODY_PADDING_HORIZONTAL,
+    right: BODY_PADDING_HORIZONTAL
+  },
+  basicInfo: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingBottom: 24
+  },
+  profileInfoBtn: {
+    height: PROFILE_INFO_BTN,
+    width: PROFILE_INFO_BTN,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.hotPink,
+    borderRadius: 16
+  },
+  dislikeBtn: {
+    height: ACTION_BUTTON_SIZE,
+    width: ACTION_BUTTON_SIZE,
+    borderRadius: ACTION_BUTTON_SIZE / 2,
+    backgroundColor: "#D0BFBF",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  superLikeBtn: {
+    height: ACTION_BUTTON_SIZE,
+    width: ACTION_BUTTON_SIZE,
+    borderRadius: ACTION_BUTTON_SIZE / 2,
+    backgroundColor: colors.white,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  likeBtn: {
+    height: ACTION_BUTTON_SIZE,
+    width: ACTION_BUTTON_SIZE,
+    borderRadius: ACTION_BUTTON_SIZE / 2,
+    backgroundColor: colors.lightPink,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
