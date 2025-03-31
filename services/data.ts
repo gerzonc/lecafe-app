@@ -1,5 +1,6 @@
 export default [
   {
+    id: "1",
     name: "Sandra",
     lastName: "Gómez",
     age: 21,
@@ -7,6 +8,7 @@ export default [
     image: require("../assets/images/list/girl-1.png")
   },
   {
+    id: "2",
     name: "Beatriz",
     lastName: "Díaz",
     age: 22,
@@ -14,6 +16,7 @@ export default [
     image: require("../assets/images/list/girl-2.png")
   },
   {
+    id: "3",
     name: "Carmen",
     lastName: "Saleta",
     age: 22,
@@ -21,6 +24,7 @@ export default [
     image: require("../assets/images/list/girl-3.png")
   },
   {
+    id: "4",
     name: "Julia",
     lastName: "Pérez",
     age: 23,

@@ -3,8 +3,8 @@ import type { OpaqueColorValue, TextProps } from "react-native";
 
 import Animated from "react-native-reanimated";
 
-type TWeight = "bold" | "semibold" | "regular"
-type TFontFamily = "maven-pro" | "quicksand"
+type TWeight = "bold" | "semibold" | "regular";
+type TFontFamily = "maven-pro" | "quicksand";
 
 interface Props extends TextProps {
   weight?: TWeight;
@@ -17,19 +17,19 @@ const fontFamilyMapping: Record<TFontFamily, Record<TWeight, string>> = {
   "maven-pro": {
     bold: "MavenPro-Bold",
     semibold: "MavenPro-SemiBold",
-    regular: "MavenPro-Regular",
+    regular: "MavenPro-Regular"
   },
   quicksand: {
     bold: "Quicksand-Bold",
     semibold: "Quicksand-SemiBold",
-    regular: "Quicksand-Regular",
-  },
+    regular: "Quicksand-Regular"
+  }
 };
 
 const weightMapping: Record<TWeight, string> = {
   bold: "bold",
   semibold: "600",
-  regular: "400",
+  regular: "400"
 };
 
 const NativeText = forwardRef(function Text(
@@ -49,7 +49,7 @@ const NativeText = forwardRef(function Text(
   const textStyles = {
     fontFamily: fontFamilyMapping[fontFamily][weight],
     fontWeight: weightMapping[weight],
-    fontSize,
+    fontSize
   };
 
   return createElement("RCTText", {
@@ -57,19 +57,19 @@ const NativeText = forwardRef(function Text(
     ref,
     style: Array.isArray(props.style)
       ? [
-        props.style,
-        {
+          props.style,
+          {
+            ...textStyles,
+            fontSize,
+            color
+          }
+        ]
+      : {
           ...textStyles,
           fontSize,
-          color
+          color,
+          ...(typeof props.style === "object" ? props.style : {})
         }
-      ]
-      : {
-        ...(typeof props.style === "object" ? props.style : {}),
-        ...textStyles,
-        fontSize,
-        color
-      }
   });
 });
 

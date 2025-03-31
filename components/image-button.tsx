@@ -1,19 +1,11 @@
 import colors from "@/constants/colors";
-import { Image, type ImageSource } from "expo-image";
+import { Image } from "expo-image";
 import { StyleSheet, View } from "react-native";
 import { Pressable, type PressableProps } from "react-native-gesture-handler";
 import Text from "./text";
 
-type TImage = "date" | "friendship" | "relationship";
-
-interface Item {
-  title: string;
-  image: ImageSource;
-  type: TImage;
-}
-
 interface Props extends PressableProps {
-  item: Item;
+  item: Section;
   active: boolean;
 }
 

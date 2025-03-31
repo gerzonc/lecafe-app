@@ -1,5 +1,4 @@
 import { Card } from "@/components";
-import data from "@/services/data";
 import { store$ } from "@/store";
 import { observer } from "@legendapp/state/react";
 import { useDrawerProgress } from "@react-navigation/drawer";
@@ -17,6 +16,7 @@ const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
 
 export default observer(() => {
   const gradient$ = store$.currentGradient.get();
+  const list$ = store$.list.get();
   const progress = useDrawerProgress();
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -25,6 +25,11 @@ export default observer(() => {
     ],
     borderRadius: interpolate(progress.value, [0, 1], [0, 30])
   }));
+
+  const handleRemove = (index: number) => {
+    const filteredList = list$.filter((_, idx) => index !== idx);
+    store$.list.set(filteredList);
+  };
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
@@ -39,11 +44,14 @@ export default observer(() => {
         contentFit="contain"
         style={{ position: "absolute", width: wWidth, height: wHeight }}
       />
-      {data
-        .map((item, index) => (
-          <Card key={index.toString()} item={item} index={index} />
-        ))
-        .reverse()}
+      {list$.map((item, index) => (
+        <Card
+          key={index.toString()}
+          item={item}
+          index={index}
+          onSwipe={() => handleRemove(index)}
+        />
+      ))}
     </Animated.View>
   );
 });
