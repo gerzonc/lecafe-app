@@ -20,10 +20,10 @@ import { sections } from "@/services/data";
 import { store$ } from "@/store";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { observer, useObservable } from "@legendapp/state/react";
+import { useEffect } from "react";
 import IconButton from "../icon-button";
 import ImageButton from "../image-button";
 import Text from "../text";
-import { useEffect } from "react";
 
 interface Props {
   item: Item;
@@ -62,6 +62,13 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
 
   useEffect(() => {
     fullscreen.value = withTiming(isFullscreen$ ? 1 : 0, { duration: 250 });
+    if (!isFullscreen$) {
+      detailsExpanded.value = withTiming(1, { duration: 250 }, (finished) => {
+        if (finished) {
+          runOnJS(handleToggleExpanded)(true);
+        }
+      });
+    }
   }, [isFullscreen$]);
 
   const toggleFullscreen = () => {
@@ -83,7 +90,7 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
       { duration: 250 },
       (finished) => {
         if (finished) {
-          runOnJS(handleToggleExpanded)();
+          runOnJS(handleToggleExpanded)(detailsExpanded.value === 1);
         }
       }
     );
@@ -100,8 +107,8 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   const handleToggleFullscreen = () =>
     store$.isFullscreen.set(fullscreen.value === 1);
 
-  const handleToggleExpanded = () =>
-    detailsExpanded$.set(detailsExpanded.value === 1);
+  const handleToggleExpanded = (isExpanded: boolean) =>
+    detailsExpanded$.set(isExpanded);
 
   useAnimatedReaction(
     () => drawerProgress.value,
@@ -111,7 +118,7 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
         detailsExpanded.value = withTiming(1, { duration: 250 });
 
         runOnJS(handleToggleFullscreen)();
-        runOnJS(handleToggleExpanded)();
+        runOnJS(handleToggleExpanded)(detailsExpanded.value === 1);
       }
     }
   );
@@ -488,7 +495,9 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
                     end={gradient$.end}
                     style={styles.interest}
                   >
-                    <Text fontFamily="maven-pro">{interest}</Text>
+                    <Text fontFamily="maven-pro" weight="bold">
+                      {interest}
+                    </Text>
                   </LinearGradient>
                 ))}
               </View>
