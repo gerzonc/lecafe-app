@@ -11,7 +11,7 @@
 > [!IMPORTANT]  
 > Before you start using this project, please make sure you have completed the following:
 
-- Follow the installation process for [React Native](https://reactnative.dev/docs/environment-setup).
+- Follow the installation process for [React Native](https://reactnative.dev/docs/set-up-your-environment).
 - Install [Git](https://git-scm.com/) to clone the repository.
 - Ensure [Bun](https://bun.sh/) is installed for managing dependencies.
 - For iOS development, install [Xcode](https://developer.apple.com/xcode/).
