@@ -275,8 +275,8 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
       -wWidth / 2,
       { duration: 600 },
       (finished) => {
-        if (finished && onSwipe) {
-          runOnJS(onSwipe)(index);
+        if (finished) {
+          runOnJS(onFinish)();
         }
       }
     );
@@ -284,8 +284,8 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
 
   const handleLike = () => {
     translateX.value = withTiming(wWidth / 2, { duration: 600 }, (finished) => {
-      if (finished && onSwipe) {
-        runOnJS(onSwipe)(index);
+      if (finished) {
+        runOnJS(onFinish)();
       }
     });
   };
@@ -293,8 +293,8 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   const handleSuperlike = () => {
     superlikeOpacity.value = withTiming(1, { duration: 100 }, () => {
       superlikeOpacity.value = withTiming(0, { duration: 950 }, (finished) => {
-        if (finished && onSwipe) {
-          runOnJS(onSwipe)(index);
+        if (finished) {
+          runOnJS(onFinish)();
         }
       });
     });
@@ -308,14 +308,22 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
       if (Math.abs(translateX.value) > SWIPE_THRESHOLD) {
         const destX = translateX.value > 0 ? wWidth : -wWidth;
         translateX.value = withTiming(destX, { duration: 200 }, (finished) => {
-          if (finished && onSwipe) {
-            runOnJS(onSwipe)(index);
+          if (finished) {
+            runOnJS(onFinish)();
           }
         });
       } else {
         translateX.value = withSpring(0, springConfig);
       }
     });
+
+  const onFinish = () => {
+    if (onSwipe) {
+      onSwipe(index);
+    }
+    detailsExpanded$.set(true);
+    store$.isFullscreen.set(false);
+  };
 
   const doubleTapGesture = Gesture.Tap()
     .numberOfTaps(2)
@@ -325,8 +333,8 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
           0,
           { duration: 950 },
           (finished) => {
-            if (finished && onSwipe) {
-              runOnJS(onSwipe)(index);
+            if (finished) {
+              runOnJS(onFinish)();
             }
           }
         );
