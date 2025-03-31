@@ -22,7 +22,7 @@
 To start running this project, clone the repository by running the following command in your Terminal:
 
 ```console
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/gerzonc/lecafe-app.git
 ```
 
 Navigate to the project directory and run the following command to install dependencies:
