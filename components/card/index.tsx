@@ -8,6 +8,7 @@ import Animated, {
   interpolate,
   interpolateColor,
   runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -22,6 +23,7 @@ import { observer, useObservable } from "@legendapp/state/react";
 import IconButton from "../icon-button";
 import ImageButton from "../image-button";
 import Text from "../text";
+import { useEffect } from "react";
 
 interface Props {
   item: Item;
@@ -55,8 +57,12 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
 
   const translateX = useSharedValue(0);
   const superlikeOpacity = useSharedValue(0);
-  const fullscreen = useSharedValue(0);
+  const fullscreen = useSharedValue(isFullscreen$ ? 1 : 0);
   const detailsExpanded = useSharedValue(1);
+
+  useEffect(() => {
+    fullscreen.value = withTiming(isFullscreen$ ? 1 : 0, { duration: 250 });
+  }, [isFullscreen$]);
 
   const toggleFullscreen = () => {
     "worklet";
@@ -96,6 +102,19 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
 
   const handleToggleExpanded = () =>
     detailsExpanded$.set(detailsExpanded.value === 1);
+
+  useAnimatedReaction(
+    () => drawerProgress.value,
+    (progress, prevProgress) => {
+      if (prevProgress === 0 && progress > 0) {
+        fullscreen.value = withTiming(0, { duration: 250 });
+        detailsExpanded.value = withTiming(1, { duration: 250 });
+
+        runOnJS(handleToggleFullscreen)();
+        runOnJS(handleToggleExpanded)();
+      }
+    }
+  );
 
   const animatedTextStyle = useAnimatedStyle(() => {
     return {
