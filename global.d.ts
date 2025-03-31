@@ -9,6 +9,7 @@ declare global {
     lastName: string;
     age: number;
     location: string;
+    interests: string[];
     image: ImageSource;
   }
 

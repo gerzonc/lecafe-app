@@ -1,12 +1,8 @@
 import { useDrawerProgress } from "@react-navigation/drawer";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { Dimensions, StyleSheet, View } from "react-native";
-import {
-  Gesture,
-  GestureDetector,
-  Pressable
-} from "react-native-gesture-handler";
+import { Dimensions, Pressable, StyleSheet, View } from "react-native";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -21,9 +17,8 @@ import Animated, {
 import colors from "@/constants/colors";
 import { sections } from "@/services/data";
 import { store$ } from "@/store";
-import { MaterialIcons } from "@expo/vector-icons";
-import { observer } from "@legendapp/state/react";
-
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { observer, useObservable } from "@legendapp/state/react";
 import IconButton from "../icon-button";
 import ImageButton from "../image-button";
 import Text from "../text";
@@ -38,6 +33,7 @@ interface Props {
 const { width: wWidth, height: wHeight } = Dimensions.get("window");
 
 const AnimatedImage = Animated.createAnimatedComponent(Image);
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const PROFILE_INFO_BTN = 32;
 const BODY_PADDING_HORIZONTAL = 31;
@@ -52,23 +48,31 @@ const springConfig = {
 
 export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   const drawerProgress = useDrawerProgress();
+  const expanded = useObservable(true);
+  const detailsVisibility = useSharedValue(1);
   const currentSection$ = store$.currentSection.get();
+  const isFullscreen$ = store$.isFullscreen.get();
+  const gradient$ = store$.currentGradient.get();
 
   const translateX = useSharedValue(0);
   const superlikeOpacity = useSharedValue(0);
   const fullscreen = useSharedValue(0);
 
   const toggleFullscreen = () => {
+    "worklet";
     fullscreen.value = withTiming(
       fullscreen.value === 0 ? 1 : 0,
-      { duration: 300 },
+      { duration: 250 },
       (finished) => {
         if (finished) {
-          store$.isFullscreen.set(fullscreen.value === 1);
+          runOnJS(handleToggleFullscreen)();
         }
       }
     );
   };
+
+  const handleToggleFullscreen = () =>
+    store$.isFullscreen.set(fullscreen.value === 1);
 
   const animatedTextStyle = useAnimatedStyle(() => {
     return {
@@ -109,8 +113,10 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   });
 
   const infoBtnStyle = useAnimatedStyle(() => {
+    const scale = interpolate(fullscreen.value, [0, 1], [1, 1.375]); // based on Figma, is just 44 / 32
     return {
-      top: interpolate(fullscreen.value, [0, 1], [0, -32])
+      top: interpolate(fullscreen.value, [0, 1], [0, -32]),
+      transform: [{ scale }]
     };
   });
 
@@ -155,7 +161,7 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   const animatedIconBtnStyle = useAnimatedStyle(() => {
     return {
       position: "absolute",
-      alignSelf: "flex-end"
+      bottom: 30
     };
   });
 
@@ -187,12 +193,16 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   }, [totalCards, index]);
 
   const profileDetailStyle = useAnimatedStyle(() => {
+    const opacity = interpolate(
+      fullscreen.value,
+      [0, 0.8, 1],
+      [0, 0, 1],
+      Extrapolation.CLAMP
+    );
     return {
-      opacity: fullscreen.value,
+      opacity,
       transform: [
-        {
-          translateY: interpolate(fullscreen.value, [0, 1], [20, 0])
-        }
+        { translateY: interpolate(fullscreen.value, [0, 1], [20, 0]) }
       ]
     };
   });
@@ -376,51 +386,82 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
                   {item.location}
                 </Text>
               </View>
-              <Pressable
+              <AnimatedPressable
                 style={[styles.profileInfoBtn, infoBtnStyle]}
                 onPress={toggleFullscreen}
               >
-                <View>
-                  <MaterialIcons
-                    name="error-outline"
+                {isFullscreen$ ? (
+                  <MaterialCommunityIcons
+                    name="chevron-down"
                     size={24}
                     color={colors.white}
                   />
-                </View>
-              </Pressable>
+                ) : (
+                  <View>
+                    <MaterialIcons
+                      name="error-outline"
+                      size={24}
+                      color={colors.white}
+                    />
+                  </View>
+                )}
+              </AnimatedPressable>
             </Animated.View>
-            <View
-              style={[
-                styles.btnsContainer,
-                { width: "75%", alignSelf: "center" },
-                animatedIconBtnStyle
-              ]}
-            >
-              <IconButton
-                family="MaterialIcons"
-                name="close"
-                size={24}
-                color={colors.white}
-                style={[{ backgroundColor: "#D0BFBF" }, styles.btnStyle]}
-                onPress={handleDislike}
-              />
-              <IconButton
-                family="FontAwesome"
-                name="heart"
-                size={24}
-                color={colors.watermelonPink}
-                style={[{ backgroundColor: colors.white }, styles.btnStyle]}
-                onPress={handleSuperlike}
-              />
-              <IconButton
-                family="MaterialIcons"
-                name="check"
-                size={24}
-                color={colors.white}
-                style={[{ backgroundColor: colors.lightPink }, styles.btnStyle]}
-                onPress={handleLike}
-              />
-            </View>
+            <Animated.View style={profileDetailStyle}>
+              <Text
+                fontFamily="quicksand"
+                fontSize={20}
+                weight="bold"
+                color="rgba(0, 0, 0, 1)"
+              >
+                Intereses
+              </Text>
+              <View style={styles.interestsContainer}>
+                {item.interests.map((interest, index) => (
+                  <LinearGradient
+                    key={`${interest}-${index}`}
+                    colors={gradient$.gradient}
+                    start={gradient$.start}
+                    end={gradient$.end}
+                    style={styles.interest}
+                  >
+                    <Text fontFamily="maven-pro">{interest}</Text>
+                  </LinearGradient>
+                ))}
+              </View>
+            </Animated.View>
+          </Animated.View>
+          <Animated.View
+            style={[
+              styles.btnsContainer,
+              { width: "75%", alignSelf: "center" },
+              animatedIconBtnStyle
+            ]}
+          >
+            <IconButton
+              family="MaterialIcons"
+              name="close"
+              size={24}
+              color={colors.white}
+              style={[{ backgroundColor: "#D0BFBF" }, styles.btnStyle]}
+              onPress={handleDislike}
+            />
+            <IconButton
+              family="FontAwesome"
+              name="heart"
+              size={24}
+              color={colors.watermelonPink}
+              style={[{ backgroundColor: colors.white }, styles.btnStyle]}
+              onPress={handleSuperlike}
+            />
+            <IconButton
+              family="MaterialIcons"
+              name="check"
+              size={24}
+              color={colors.white}
+              style={[{ backgroundColor: colors.lightPink }, styles.btnStyle]}
+              onPress={handleLike}
+            />
           </Animated.View>
         </LinearGradient>
         <AnimatedImage
@@ -463,6 +504,21 @@ const styles = StyleSheet.create({
   },
   body: {
     position: "absolute"
+  },
+  interestsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingTop: 12
+  },
+  interest: {
+    borderRadius: 24.5,
+    flexWrap: "wrap",
+    alignSelf: "flex-start",
+    padding: 10,
+    marginRight: 8,
+    marginBottom: 8
   },
   basicInfo: {
     flexDirection: "row",

@@ -5,6 +5,7 @@ export default [
     lastName: "Gómez",
     age: 21,
     location: "Surco, Perú",
+    interests: ["Viajar", "Leer", "Amistad", "Salir de fiesta", "Pasarlo bien"],
     image: require("../assets/images/list/girl-1.png")
   },
   {
@@ -13,6 +14,7 @@ export default [
     lastName: "Díaz",
     age: 22,
     location: "Lima, Perú",
+    interests: ["Viajar", "Leer", "Amistad", "Salir de fiesta", "Pasarlo bien"],
     image: require("../assets/images/list/girl-2.png")
   },
   {
@@ -21,6 +23,7 @@ export default [
     lastName: "Saleta",
     age: 22,
     location: "Miraflores, Perú",
+    interests: ["Viajar", "Leer", "Amistad", "Salir de fiesta", "Pasarlo bien"],
     image: require("../assets/images/list/girl-3.png")
   },
   {
@@ -29,6 +32,7 @@ export default [
     lastName: "Pérez",
     age: 23,
     location: "Arequipa, Perú",
+    interests: ["Viajar", "Leer", "Amistad", "Salir de fiesta", "Pasarlo bien"],
     image: require("../assets/images/list/girl-4.png")
   }
 ];
@@ -37,6 +41,7 @@ export const sections = [
   {
     title: "Amistad",
     type: "friendship",
+    interests: ["Viajar", "Leer", "Amistad", "Salir de fiesta", "Pasarlo bien"],
     image: require("../assets/images/ui/friendship.svg")
   },
   {
