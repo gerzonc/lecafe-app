@@ -48,8 +48,7 @@ const springConfig = {
 
 export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   const drawerProgress = useDrawerProgress();
-  const expanded = useObservable(true);
-  const detailsVisibility = useSharedValue(1);
+  const detailsExpanded$ = useObservable(true);
   const currentSection$ = store$.currentSection.get();
   const isFullscreen$ = store$.isFullscreen.get();
   const gradient$ = store$.currentGradient.get();
@@ -57,6 +56,7 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   const translateX = useSharedValue(0);
   const superlikeOpacity = useSharedValue(0);
   const fullscreen = useSharedValue(0);
+  const detailsExpanded = useSharedValue(1);
 
   const toggleFullscreen = () => {
     "worklet";
@@ -71,8 +71,31 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
     );
   };
 
+  const toggleDetails = () => {
+    detailsExpanded.value = withTiming(
+      detailsExpanded.value === 1 ? 0 : 1,
+      { duration: 250 },
+      (finished) => {
+        if (finished) {
+          runOnJS(handleToggleExpanded)();
+        }
+      }
+    );
+  };
+
+  const handleProfileInfoPress = () => {
+    if (store$.isFullscreen.get()) {
+      toggleDetails();
+    } else {
+      toggleFullscreen();
+    }
+  };
+
   const handleToggleFullscreen = () =>
     store$.isFullscreen.set(fullscreen.value === 1);
+
+  const handleToggleExpanded = () =>
+    detailsExpanded$.set(detailsExpanded.value === 1);
 
   const animatedTextStyle = useAnimatedStyle(() => {
     return {
@@ -91,15 +114,18 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   });
 
   const animatedBodyStyle = useAnimatedStyle(() => {
-    const height = interpolate(fullscreen.value, [0, 1], [120, wHeight * 0.6]);
+    const height = interpolate(
+      fullscreen.value,
+      [0, 1],
+      [120, wHeight * 0.6 * detailsExpanded.value + 120]
+    );
     const bottom = interpolate(fullscreen.value, [0, 0.8], [30, 0]);
     const backgroundColor = interpolateColor(
       fullscreen.value,
       [0, 0.9],
       ["rgba(255, 255, 255, 0)", "#FFFFFF"]
     );
-    const top = interpolate(fullscreen.value, [0, 1], [0, 16]);
-
+    const top = interpolate(fullscreen.value, [0, 1], [0, -8]);
     return {
       height,
       left: 0,
@@ -115,22 +141,32 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   const infoBtnStyle = useAnimatedStyle(() => {
     const scale = interpolate(fullscreen.value, [0, 1], [1, 1.375]); // based on Figma, is just 44 / 32
     return {
-      top: interpolate(fullscreen.value, [0, 1], [0, -32]),
+      top: interpolate(fullscreen.value, [0, 1], [0, -16]),
       transform: [{ scale }]
     };
   });
 
   const imageAnimatedStyle = useAnimatedStyle(() => {
+    const collapsedImageHeight = wHeight;
+    const expandedImageHeight = wHeight * 0.55;
+
+    const fullscreenImageHeight = interpolate(
+      detailsExpanded.value,
+      [0, 1],
+      [collapsedImageHeight, expandedImageHeight]
+    );
+
     const imageHeight = interpolate(
       fullscreen.value,
       [0, 1],
-      [wHeight, wHeight * 0.55]
+      [wHeight, fullscreenImageHeight]
     );
+
     return {
       height: imageHeight,
       width: wWidth
     };
-  }, [fullscreen]);
+  }, [fullscreen, detailsExpanded]);
 
   const animatedContainerStyle = useAnimatedStyle(() => {
     const scalePosition = index === totalCards - 1 ? 0.84 : 0.77;
@@ -158,12 +194,15 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
     };
   });
 
-  const animatedIconBtnStyle = useAnimatedStyle(() => {
-    return {
-      position: "absolute",
-      bottom: 30
-    };
-  });
+  const animatedIconBtnStyle = useAnimatedStyle(() => ({
+    position: "absolute",
+    bottom: interpolate(
+      detailsExpanded.value,
+      [0, 1],
+      [-ACTION_BUTTON_SIZE, 30]
+    ),
+    opacity: detailsExpanded.value
+  }));
 
   const animatedStyle = useAnimatedStyle(() => {
     const rotate = interpolate(
@@ -193,16 +232,11 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   }, [totalCards, index]);
 
   const profileDetailStyle = useAnimatedStyle(() => {
-    const opacity = interpolate(
-      fullscreen.value,
-      [0, 0.8, 1],
-      [0, 0, 1],
-      Extrapolation.CLAMP
-    );
+    const baseOpacity = interpolate(fullscreen.value, [0, 1], [0, 1]);
     return {
-      opacity,
+      opacity: baseOpacity * detailsExpanded.value,
       transform: [
-        { translateY: interpolate(fullscreen.value, [0, 1], [20, 0]) }
+        { translateY: interpolate(detailsExpanded.value, [0, 1], [20, 0]) }
       ]
     };
   });
@@ -388,11 +422,13 @@ export default observer(({ item, totalCards, index, onSwipe }: Props) => {
               </View>
               <AnimatedPressable
                 style={[styles.profileInfoBtn, infoBtnStyle]}
-                onPress={toggleFullscreen}
+                onPress={handleProfileInfoPress}
               >
                 {isFullscreen$ ? (
                   <MaterialCommunityIcons
-                    name="chevron-down"
+                    name={
+                      detailsExpanded$.get() ? "chevron-down" : "chevron-up"
+                    }
                     size={24}
                     color={colors.white}
                   />
