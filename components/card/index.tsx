@@ -10,6 +10,7 @@ import {
 import Animated, {
   Extrapolation,
   interpolate,
+  interpolateColor,
   runOnJS,
   useAnimatedStyle,
   useSharedValue,
@@ -22,6 +23,7 @@ import { sections } from "@/services/data";
 import { store$ } from "@/store";
 import { MaterialIcons } from "@expo/vector-icons";
 import { observer } from "@legendapp/state/react";
+
 import IconButton from "../icon-button";
 import ImageButton from "../image-button";
 import Text from "../text";
@@ -29,10 +31,13 @@ import Text from "../text";
 interface Props {
   item: Item;
   index: number;
+  totalCards: number;
   onSwipe?: (index: number) => void;
 }
 
 const { width: wWidth, height: wHeight } = Dimensions.get("window");
+
+const AnimatedImage = Animated.createAnimatedComponent(Image);
 
 const PROFILE_INFO_BTN = 32;
 const BODY_PADDING_HORIZONTAL = 31;
@@ -45,29 +50,149 @@ const springConfig = {
   overshootClamping: true
 };
 
-export default observer(({ item, index, onSwipe }: Props) => {
+export default observer(({ item, totalCards, index, onSwipe }: Props) => {
   const drawerProgress = useDrawerProgress();
   const currentSection$ = store$.currentSection.get();
 
   const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
   const superlikeOpacity = useSharedValue(0);
+  const fullscreen = useSharedValue(0);
+
+  const toggleFullscreen = () => {
+    fullscreen.value = withTiming(
+      fullscreen.value === 0 ? 1 : 0,
+      { duration: 300 },
+      (finished) => {
+        if (finished) {
+          store$.isFullscreen.set(fullscreen.value === 1);
+        }
+      }
+    );
+  };
+
+  const animatedTextStyle = useAnimatedStyle(() => {
+    return {
+      color: interpolateColor(
+        fullscreen.value,
+        [0, 1],
+        [colors.white, "rgba(0, 0, 0, 1)"]
+      )
+    };
+  });
+
+  const animatedBasicInfoStyle = useAnimatedStyle(() => {
+    return {
+      paddingTop: interpolate(fullscreen.value, [0, 1], [0, 42])
+    };
+  });
+
+  const animatedBodyStyle = useAnimatedStyle(() => {
+    const height = interpolate(fullscreen.value, [0, 1], [120, wHeight * 0.6]);
+    const bottom = interpolate(fullscreen.value, [0, 0.8], [30, 0]);
+    const backgroundColor = interpolateColor(
+      fullscreen.value,
+      [0, 0.9],
+      ["rgba(255, 255, 255, 0)", "#FFFFFF"]
+    );
+    const top = interpolate(fullscreen.value, [0, 1], [0, 16]);
+
+    return {
+      height,
+      left: 0,
+      right: 0,
+      bottom,
+      paddingTop: top,
+      paddingHorizontal: 30,
+      backgroundColor,
+      borderTopLeftRadius: 50
+    };
+  });
+
+  const infoBtnStyle = useAnimatedStyle(() => {
+    return {
+      top: interpolate(fullscreen.value, [0, 1], [0, -32])
+    };
+  });
+
+  const imageAnimatedStyle = useAnimatedStyle(() => {
+    const imageHeight = interpolate(
+      fullscreen.value,
+      [0, 1],
+      [wHeight, wHeight * 0.55]
+    );
+    return {
+      height: imageHeight,
+      width: wWidth
+    };
+  }, [fullscreen]);
+
+  const animatedContainerStyle = useAnimatedStyle(() => {
+    const scalePosition = index === totalCards - 1 ? 0.84 : 0.77;
+    const isLastTranslateY = index === totalCards - 1 ? 32 : -20;
+    return {
+      borderRadius: interpolate(fullscreen.value, [0, 1], [30, 0]),
+      transform: [
+        { scale: interpolate(fullscreen.value, [0, 1], [scalePosition, 1]) },
+        {
+          translateY: interpolate(
+            fullscreen.value,
+            [0, 1],
+            [isLastTranslateY, 0]
+          )
+        }
+      ],
+      width: fullscreen.value === 1 ? wWidth : wWidth,
+      height: fullscreen.value === 1 ? wHeight : "100%"
+    };
+  }, [totalCards, index]);
+
+  const topSectionStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(fullscreen.value, [0, 1], [1, 0])
+    };
+  });
+
+  const animatedIconBtnStyle = useAnimatedStyle(() => {
+    return {
+      position: "absolute",
+      alignSelf: "flex-end"
+    };
+  });
 
   const animatedStyle = useAnimatedStyle(() => {
     const rotate = interpolate(
       translateX.value,
       [-wWidth / 5, 0, wWidth / 5],
-      [-5, 0, 5]
+      [-10, 0, 10]
     );
 
-    const scale = interpolate(drawerProgress.value, [0, 1], [0.84, 1]);
+    const isLastTranslateY = index === totalCards - 1 ? 32 : -15;
+    const scalePosition = index === totalCards - 1 ? 0.84 : 0.77;
+    const scale = interpolate(drawerProgress.value, [0, 1], [scalePosition, 1]);
 
     return {
       transform: [
         { translateX: translateX.value },
-        { translateY: translateY.value },
+        {
+          translateY: interpolate(
+            drawerProgress.value,
+            [0, 1],
+            [isLastTranslateY, 0]
+          )
+        },
         { rotate: `${rotate}deg` },
         { scale }
+      ]
+    };
+  }, [totalCards, index]);
+
+  const profileDetailStyle = useAnimatedStyle(() => {
+    return {
+      opacity: fullscreen.value,
+      transform: [
+        {
+          translateY: interpolate(fullscreen.value, [0, 1], [20, 0])
+        }
       ]
     };
   });
@@ -101,6 +226,36 @@ export default observer(({ item, index, onSwipe }: Props) => {
     store$.currentGradient.set(colors[section.type]);
   };
 
+  const handleDislike = () => {
+    translateX.value = withTiming(
+      -wWidth / 2,
+      { duration: 600 },
+      (finished) => {
+        if (finished && onSwipe) {
+          runOnJS(onSwipe)(index);
+        }
+      }
+    );
+  };
+
+  const handleLike = () => {
+    translateX.value = withTiming(wWidth / 2, { duration: 600 }, (finished) => {
+      if (finished && onSwipe) {
+        runOnJS(onSwipe)(index);
+      }
+    });
+  };
+
+  const handleSuperlike = () => {
+    superlikeOpacity.value = withTiming(1, { duration: 100 }, () => {
+      superlikeOpacity.value = withTiming(0, { duration: 950 }, (finished) => {
+        if (finished && onSwipe) {
+          runOnJS(onSwipe)(index);
+        }
+      });
+    });
+  };
+
   const panGesture = Gesture.Pan()
     .onUpdate((event) => {
       translateX.value = event.translationX;
@@ -122,7 +277,15 @@ export default observer(({ item, index, onSwipe }: Props) => {
     .numberOfTaps(2)
     .onEnd(() => {
       superlikeOpacity.value = withTiming(1, { duration: 100 }, () => {
-        superlikeOpacity.value = withTiming(0, { duration: 1250 });
+        superlikeOpacity.value = withTiming(
+          0,
+          { duration: 950 },
+          (finished) => {
+            if (finished && onSwipe) {
+              runOnJS(onSwipe)(index);
+            }
+          }
+        );
       });
     });
 
@@ -130,7 +293,9 @@ export default observer(({ item, index, onSwipe }: Props) => {
 
   return (
     <GestureDetector gesture={composedGesture}>
-      <Animated.View style={[styles.container, animatedStyle]}>
+      <Animated.View
+        style={[styles.container, animatedContainerStyle, animatedStyle]}
+      >
         <Animated.View style={[styles.likeOverlay, likeOverlayStyle]}>
           <MaterialIcons
             name="check"
@@ -159,8 +324,7 @@ export default observer(({ item, index, onSwipe }: Props) => {
               fontSize={39}
               style={styles.superlikeTextContainer}
             >
-              SUPER{"\n"}
-              LIKE
+              SUPER{"\n"}LIKE
             </Text>
           </View>
         </Animated.View>
@@ -180,7 +344,13 @@ export default observer(({ item, index, onSwipe }: Props) => {
           style={styles.gradient}
         >
           <View style={styles.sections}>
-            <View style={styles.btnsContainer}>
+            <Animated.View
+              style={[
+                styles.btnsContainer,
+                { width: "85%", alignSelf: "center" },
+                topSectionStyle
+              ]}
+            >
               {sections.map((section, index) => (
                 <ImageButton
                   key={index.toString()}
@@ -189,17 +359,27 @@ export default observer(({ item, index, onSwipe }: Props) => {
                   onPress={() => handleSectionPress(section as Section)}
                 />
               ))}
-            </View>
+            </Animated.View>
           </View>
-          <View style={styles.body}>
-            <View style={styles.basicInfo}>
+          <Animated.View style={[styles.body, animatedBodyStyle]}>
+            <Animated.View style={[styles.basicInfo, animatedBasicInfoStyle]}>
               <View>
-                <Text fontFamily="quicksand" fontSize={20} weight="bold">
+                <Text
+                  fontFamily="quicksand"
+                  fontSize={20}
+                  weight="bold"
+                  style={animatedTextStyle}
+                >
                   {item.name}, {item.age}
                 </Text>
-                <Text fontFamily="maven-pro">{item.location}</Text>
+                <Text fontFamily="maven-pro" style={animatedTextStyle}>
+                  {item.location}
+                </Text>
               </View>
-              <Pressable style={styles.profileInfoBtn}>
+              <Pressable
+                style={[styles.profileInfoBtn, infoBtnStyle]}
+                onPress={toggleFullscreen}
+              >
                 <View>
                   <MaterialIcons
                     name="error-outline"
@@ -208,33 +388,45 @@ export default observer(({ item, index, onSwipe }: Props) => {
                   />
                 </View>
               </Pressable>
-            </View>
-            <View style={styles.btnsContainer}>
+            </Animated.View>
+            <View
+              style={[
+                styles.btnsContainer,
+                { width: "75%", alignSelf: "center" },
+                animatedIconBtnStyle
+              ]}
+            >
               <IconButton
                 family="MaterialIcons"
                 name="close"
                 size={24}
                 color={colors.white}
-                style={styles.dislikeBtn}
+                style={[{ backgroundColor: "#D0BFBF" }, styles.btnStyle]}
+                onPress={handleDislike}
               />
               <IconButton
                 family="FontAwesome"
                 name="heart"
                 size={24}
                 color={colors.watermelonPink}
-                style={styles.superLikeBtn}
+                style={[{ backgroundColor: colors.white }, styles.btnStyle]}
+                onPress={handleSuperlike}
               />
               <IconButton
                 family="MaterialIcons"
                 name="check"
                 size={24}
                 color={colors.white}
-                style={styles.likeBtn}
+                style={[{ backgroundColor: colors.lightPink }, styles.btnStyle]}
+                onPress={handleLike}
               />
             </View>
-          </View>
+          </Animated.View>
         </LinearGradient>
-        <Image source={item.image} style={styles.image} />
+        <AnimatedImage
+          source={item.image}
+          style={[styles.image, imageAnimatedStyle]}
+        />
       </Animated.View>
     </GestureDetector>
   );
@@ -243,7 +435,7 @@ export default observer(({ item, index, onSwipe }: Props) => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    height: "100%",
+    height: wHeight * 0.9,
     width: wWidth,
     overflow: "hidden",
     borderRadius: 30
@@ -270,10 +462,7 @@ const styles = StyleSheet.create({
     width: "100%"
   },
   body: {
-    position: "absolute",
-    bottom: 30,
-    left: BODY_PADDING_HORIZONTAL,
-    right: BODY_PADDING_HORIZONTAL
+    position: "absolute"
   },
   basicInfo: {
     flexDirection: "row",
@@ -281,6 +470,8 @@ const styles = StyleSheet.create({
     paddingBottom: 24
   },
   profileInfoBtn: {
+    position: "absolute",
+    right: 0,
     height: PROFILE_INFO_BTN,
     width: PROFILE_INFO_BTN,
     justifyContent: "center",
@@ -288,29 +479,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.hotPink,
     borderRadius: 16
   },
-  dislikeBtn: {
+  btnStyle: {
     height: ACTION_BUTTON_SIZE,
     width: ACTION_BUTTON_SIZE,
     borderRadius: ACTION_BUTTON_SIZE / 2,
-    backgroundColor: "#D0BFBF",
     justifyContent: "center",
-    alignItems: "center"
-  },
-  superLikeBtn: {
-    height: ACTION_BUTTON_SIZE,
-    width: ACTION_BUTTON_SIZE,
-    borderRadius: ACTION_BUTTON_SIZE / 2,
-    backgroundColor: colors.white,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  likeBtn: {
-    height: ACTION_BUTTON_SIZE,
-    width: ACTION_BUTTON_SIZE,
-    borderRadius: ACTION_BUTTON_SIZE / 2,
-    backgroundColor: colors.lightPink,
-    justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    shadowColor: "rgba(229, 229, 229, 0.25)",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 10
   },
   dislikeOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -330,7 +509,11 @@ const styles = StyleSheet.create({
   },
   superlikeOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(255, 177, 199, 0.7)"
+    backgroundColor: "rgba(255, 177, 199, 0.7)",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 2,
+    padding: 10
   },
   rotateSuperlikeOverlay: {
     transform: [{ rotate: "-4.96deg" }]

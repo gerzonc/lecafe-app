@@ -3,7 +3,7 @@ import Svg, { Path } from "react-native-svg";
 
 interface Props {
   color?: ColorValue;
-  size: number;
+  size?: number;
 }
 
 /**
@@ -12,7 +12,7 @@ so using this as workaround
 */
 
 export default function FilterIcon({ color = "#fff", size = 21 }: Props) {
-  const height = size * 0.8095238095; // based on original dimension being 17x21
+  const height = size * 1.2352941176; // based on original dimension being 17x21
 
   return (
     <Svg width={size} height={height} viewBox="0 0 17 21" fill="none">

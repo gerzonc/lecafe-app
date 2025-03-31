@@ -3,7 +3,8 @@ import {
   type GestureResponderEvent,
   Pressable,
   StyleSheet,
-  type ViewStyle
+  type ViewStyle,
+  type StyleProp
 } from "react-native";
 
 type IconFamily = "MaterialIcons" | "FontAwesome";
@@ -14,7 +15,7 @@ interface IconButtonProps {
   name: keyof typeof FontAwesome.glyphMap | keyof typeof MaterialIcons.glyphMap;
   size?: number;
   color?: string;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 const iconComponents = {

@@ -1,0 +1,25 @@
+import type { ColorValue } from "react-native";
+import Svg, { Path } from "react-native-svg";
+
+interface Props {
+  color?: ColorValue;
+  size?: number;
+}
+
+/**
+Couldn't find the settings icon on @expo/vector-icons (here: https://icons.expo.fyi/Index),
+so using this as workaround
+*/
+
+export default function SettingsIcon({ color = "#fff", size = 18 }: Props) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 18 18" fill="none">
+      <Path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M3.84124 14.1588L5.27208 18L9 16.2956L12.7279 18L14.1588 14.1588L18 12.7279L16.2956 9L18 5.27208L14.1588 3.84124L12.7279 0L9 1.70441L5.27208 0L3.84124 3.84124L0 5.27208L1.70441 9L0 12.7279L3.84124 14.1588ZM11.7734 15.6956L9.00001 14.4276L6.22661 15.6956L5.16213 12.8379L2.30443 11.7734L3.57243 9.00005L2.30443 6.22665L5.16213 5.16217L6.22661 2.30448L9.00001 3.57247L11.7734 2.30448L12.8379 5.16217L15.6956 6.22665L14.4276 9.00005L15.6956 11.7734L12.8379 12.8379L11.7734 15.6956ZM9.0004 13.2472C6.65474 13.2472 4.7532 11.3457 4.7532 9.00002C4.7532 6.65437 6.65474 4.75283 9.0004 4.75283C11.3461 4.75283 13.2476 6.65437 13.2476 9.00002C13.2476 11.3457 11.3461 13.2472 9.0004 13.2472ZM11.5487 8.99998C11.5487 10.4074 10.4078 11.5483 9.0004 11.5483C7.593 11.5483 6.45208 10.4074 6.45208 8.99998C6.45208 7.59259 7.593 6.45167 9.0004 6.45167C10.4078 6.45167 11.5487 7.59259 11.5487 8.99998Z"
+        fill={color}
+      />
+    </Svg>
+  );
+}

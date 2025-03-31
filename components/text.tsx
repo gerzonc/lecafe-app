@@ -65,10 +65,10 @@ const NativeText = forwardRef(function Text(
           }
         ]
       : {
+          ...(typeof props.style === "object" ? props.style : {}),
           ...textStyles,
           fontSize,
-          color,
-          ...(typeof props.style === "object" ? props.style : {})
+          color
         }
   });
 });

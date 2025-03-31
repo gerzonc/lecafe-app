@@ -3,7 +3,7 @@ import Svg, { Path } from "react-native-svg";
 
 interface Props {
   color?: ColorValue;
-  size: number;
+  size?: number;
 }
 
 /**
